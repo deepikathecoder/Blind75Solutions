@@ -1,0 +1,455 @@
+15. 3Sum
+https://leetcode.com/problems/3sum/description/
+
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+Notice that the solution set must not contain duplicate triplets.
+
+ 
+
+Example 1:
+
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Explanation: 
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+The distinct triplets are [-1,0,1] and [-1,-1,2].
+Notice that the order of the output and the order of the triplets does not matter.
+Example 2:
+
+Input: nums = [0,1,1]
+Output: []
+Explanation: The only possible triplet does not sum up to 0.
+Example 3:
+
+Input: nums = [0,0,0]
+Output: [[0,0,0]]
+Explanation: The only possible triplet sums up to 0.
+ 
+
+Constraints:
+
+3 <= nums.length <= 3000
+-105 <= nums[i] <= 105
+
+--------------------------------------------------------------------------------------------------------------
+Explaination:-
+
+# What is 3 Sum Problem?
+
+You are given numbers.
+
+Example:
+
+```text
+[-1, 0, 1, 2, -1, -4]
+```
+
+Your job:
+
+👉 Find **3 friends (3 numbers)** whose total becomes **0**
+
+Like:
+
+```text
+a + b + c = 0
+```
+
+We need to return all groups of **3 numbers**.
+
+Example answer:
+
+```text
+[-1, -1, 2]
+[-1, 0, 1]
+```
+
+Because:
+
+```text
+-1 + -1 + 2 = 0
+-1 + 0 + 1 = 0
+```
+
+---
+
+# Think Like a Kid 🎒
+
+Imagine kids are standing in a line.
+
+Some have **positive chocolates (+)** 🍫
+Some have **negative chocolates (-)** 😄
+
+Goal:
+
+Find **3 kids** whose chocolates become **exactly ZERO**.
+
+Example:
+
+
+-1   0   1   2   -1   -4
+```
+
+---
+
+# Silly Method (Brute Force)
+
+Kid says:
+
+“Let me check every group of 3!”
+
+Try:
+
+```text
+(-1,0,1)
+(-1,0,2)
+(-1,1,2)
+```
+
+And every possible combination.
+
+This works…
+
+BUT TOO SLOW 😭
+
+Because:
+
+For every number → check every number → check every number.
+
+Time Complexity:
+
+```text
+O(n³)
+```
+
+Very bad for interviews ❌
+
+---
+
+# Smart Interview Trick
+
+We use:
+
+## 1. Sorting
+
+## 2. Two Pointers
+
+---
+
+## Step 1: Sort the array
+
+Before:
+
+```text
+[-1,0,1,2,-1,-4]
+```
+
+After sorting:
+
+```text
+[-4,-1,-1,0,1,2]
+```
+
+Why sort?
+
+Because now numbers are in order.
+
+This helps us move intelligently.
+
+---
+
+## Step 2: Fix one number
+
+Imagine:
+
+You pick one kid and say:
+
+“You stay here!”
+
+Then find **2 more friends** whose sum makes total = 0.
+
+---
+
+### First Number = -4
+
+```text
+[-4,-1,-1,0,1,2]
+  i
+```
+
+We already picked `-4`.
+
+Now we need:
+
+```text
+? + ? = 4
+```
+
+Why?
+
+Because:
+
+```text
+-4 + ? + ? = 0
+```
+
+Move `-4` to other side:
+
+```text
+? + ? = 4
+```
+
+Now use **2 pointers**.
+
+```text
+L             R
+-4 -1 -1 0 1 2
+```
+
+Check:
+
+```text
+-4 + (-1) + 2 = -3
+```
+
+Too small.
+
+Need bigger number.
+
+Move LEFT →
+
+---
+
+Again:
+
+```text
+-4 + (-1) + 2 = -3
+```
+
+Still small.
+
+Move LEFT →
+
+---
+
+```text
+-4 + 0 + 2 = -2
+```
+
+Still small.
+
+Move LEFT →
+
+---
+
+```text
+-4 + 1 + 2 = -1
+```
+
+No answer.
+
+Done.
+
+---
+
+## Next Number = -1
+
+```text
+[-4,-1,-1,0,1,2]
+    i
+```
+
+Need:
+
+```text
+? + ? = 1
+```
+
+Pointers:
+
+```text
+L         R
+-4 -1 -1 0 1 2
+```
+
+Try:
+
+```text
+-1 + (-1) + 2 = 0
+```
+
+🎉 FOUND ONE!
+
+Answer:
+
+```text
+[-1,-1,2]
+```
+
+Now move both pointers.
+
+---
+
+Try again:
+
+```text
+-1 + 0 + 1 = 0
+```
+
+🎉 FOUND AGAIN!
+
+Answer:
+
+```text
+[-1,0,1]
+```
+
+---
+
+Done.
+
+---
+
+# Important Trick — Remove Duplicates
+
+See:
+
+```text
+[-1,-1]
+```
+
+If we repeat same number again:
+
+We may get same answer again.
+
+Interviewers hate duplicates.
+
+So skip repeated numbers.
+
+Example:
+
+```text
+if(nums[i] == nums[i-1])
+continue;
+```
+
+---
+
+# Golden Rule
+
+When checking 3 numbers:
+
+### Sum < 0
+
+Need bigger number.
+
+Move LEFT →
+
+---
+
+### Sum > 0
+
+Too big.
+
+Move RIGHT ←
+
+---
+
+### Sum == 0
+
+🎉 Found answer
+
+Store it and move both.
+
+---
+
+## Visual Memory Trick
+
+
+Too small → move LEFT
+Too big   → move RIGHT
+Equal 0   → save answer
+```
+
+Because array is sorted.
+
+------------------------------------------------------------------------------------
+
+## Code 
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        List<List<Integer>> resultList = new ArrayList<>();
+
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            //to skip duplicates 
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            int left = i + 1;
+            int right = nums.length - 1;
+
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+
+                if (sum == 0) {
+                    resultList.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    //to skip duplicates
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+
+                    left++;
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        return resultList;
+    }
+}
+
+
+
+-------------------------------------------------------------------------------------------
+
+## Time Complexity
+
+Sorting:
+
+```text
+O(n log n)
+```
+
+Loop + two pointers:
+
+```text
+O(n²)
+```
+
+Final:
+
+```text
+O(n²)
+```
+
+Very good for interviews ✅
+
+---
+
+### Interview One-Liner
+
+> “We sort the array, fix one element, and use two pointers to find the remaining pair whose sum makes the total zero while avoiding duplicates.”
+
+This sentence sounds senior-level in interviews 😄
