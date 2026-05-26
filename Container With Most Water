@@ -29,6 +29,288 @@ n == height.length
 2 <= n <= 105
 0 <= height[i] <= 104
 
+--------------------------------------------------------------------------------------------------
+
+Explaination:-
+
+Perfect. Let’s understand **Container With Most Water** like a story a **7-year-old kid** can understand 😄
+
+Imagine you have many sticks standing on the ground.
+
+Example:
+
+Height = [1,8,6,2,5,4,8,3,7]
+
+
+Looks like this:
+
+
+        |
+        |       |
+        |   |   |       |
+|       |   |   |       |
+|       |   | | |       |
+| |     |   | | |     | |
+| | |   | | | | |     | |
+| | | | | | | | | |   | |
+--------------------------------
+ 1 8 6 2 5 4 8 3 7
+```
+
+Now imagine **water can stay between any 2 sticks**.
+
+Example:
+
+```text
+|                 |
+|~~~~~~~~~~~~~~~~~|
+|~~~~~~~~~~~~~~~~~|
+|~~~~~~~~~~~~~~~~~|
+-------------------
+```
+
+We want to find:
+
+👉 **Which 2 sticks can hold the MOST water?**
+
+---
+
+## Rule of Water
+
+Water depends on **2 things**:
+
+### 1. Height
+
+If one wall is short, water spills.
+
+Example:
+
+Tall wall     Small wall
+    |              |
+    |~~~~~~~~~~~~~~|
+    |~~~~~~~~~~~~~~|
+---------------------
+```
+
+Even if one wall is huge, water can only go as high as the **smaller wall**.
+
+So:
+
+**Water height = smaller wall**
+
+---
+
+### 2. Distance (Width)
+
+Farther walls = more space for water.
+
+Example:
+
+```text
+|                 |
+|~~~~~~~~~~~~~~~~~|
+-------------------
+```
+
+More distance = bigger container.
+
+---
+
+The formula is:
+
+area/ water = height * width
+
+---
+
+# Brute Force Thinking (Slow Method)
+
+Kid thinking:
+
+“Let me try EVERY pair!”
+
+Try:
+
+* Stick 1 with Stick 2
+* Stick 1 with Stick 3
+* Stick 1 with Stick 4
+
+…and so on.
+
+This works but becomes **very slow**.
+
+Time Complexity = **O(n²)** ❌
+
+Interviewers want faster.
+
+---
+
+# Smart Trick (Two Pointers)
+
+Instead of checking everyone…
+
+We do something clever.
+
+We start from **both ends**.
+
+
+L                     R
+1  8  6  2  5  4  8  3  7
+```
+
+Why?
+
+Because maximum width is here.
+
+---
+
+## Step 1
+
+```text
+L                     R
+1  8  6  2  5  4  8  3  7
+```
+
+Water:
+
+* smaller height = `1`
+* width = `8`
+
+Area =
+
+```text
+1 × 8 = 8
+```
+
+Maximum = 8
+
+Now important question:
+
+### Which pointer should move?
+
+Left stick = `1`
+Right stick = `7`
+
+The smaller one (`1`) is the problem.
+
+Even if width is huge:
+
+
+1                100
+|~~~~~~~~~~~~~~~~|
+```
+
+Water still small because **short wall spills water**.
+
+So we move the **smaller wall**.
+
+Move Left →
+
+---
+
+## Step 2
+
+```text
+   L                 R
+1  8  6  2  5  4  8  3  7
+```
+
+Now:
+
+* smaller height = `7`
+* width = `7`
+
+Area:
+
+```text
+7 × 7 = 49
+```
+
+🔥 Maximum = **49**
+
+Now compare heights:
+
+`8` vs `7`
+
+Smaller = `7`
+
+Move Right ←
+
+---
+
+## Step 3
+
+```text
+   L              R
+1  8  6  2  5  4  8  3  7
+```
+
+Area:
+
+```text
+min(8,3) × width
+3 × 6 = 18
+```
+
+Still smaller than 49.
+
+Move smaller pointer again.
+
+---
+
+We keep repeating until pointers meet.
+
+---
+
+## Golden Rule (MOST IMPORTANT)
+
+### Always move the SMALLER height
+
+Why?
+
+Because:
+
+Suppose:
+
+```text
+2              10
+|~~~~~~~~~~~~~~|
+```
+
+The `2` limits water.
+
+Moving `10` is useless.
+
+You must try to find a taller wall than `2`.
+
+So:
+
+✅ Move smaller wall
+❌ Never move bigger wall first
+
+This is the **main interview trick**.
+
+---
+
+## Dry Run Summary
+
+```text
+1 and 7 → area = 8
+8 and 7 → area = 49  ✅ BEST
+8 and 3 → area = 18
+8 and 8 → smaller
+...
+```
+
+Answer = **49**
+
+---
+### Remember this interview sentence:
+
+> “We use two pointers because width is maximum initially. We move the smaller height pointer since the smaller wall limits water capacity.”
+
+That one line alone sounds very strong in interviews 😄
+
+
 ------------------------------------------------------------------------------------------------------------
 
 class Solution {
