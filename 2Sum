@@ -29,7 +29,11 @@ Constraints:
 -109 <= target <= 109
 Only one valid answer exists.
 
+---------------------------------------
 
+“I use a HashMap to store previously seen numbers and check whether the complement (target - current) exists in O(1) time.”
+TC: O(n)
+SC: O(n)
 
 ----------------------------------------------------------------
 
